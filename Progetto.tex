@@ -8,11 +8,26 @@
 \usepackage{enumitem}
 \usepackage{multicol}
 
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
 \title{Machine Learning - project}
+\author{Kasela Pranav, Pagani Miriam Beatrice, Saviano Marco, Zaccaria Antonella}
 \date{}
 
 \begin{document}
 \maketitle
+
+%\tableofcontents
+
+
+~\\ %vai a capo
 \begin{abstract}
 	Credit card default happens when you've become severely delinquent on your credit card payment.
 
@@ -33,10 +48,13 @@
 \end{abstract}
 
 \begin{multicols}{2}
+
+\tableofcontents
+	
 \section{Introduction}
 This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
 
-The following variables and their characteristics are:
+The attributes and their characteristics are:
 \begin{itemize}[noitemsep]
 \item ID: ID of each client
 \item LIMIT\_BAL: Amount of given credit in NT dollars
@@ -44,24 +62,24 @@ The following variables and their characteristics are:
 \item EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 0,5,6=unknown)
 \item MARRIAGE: Marital status (1=married, 2=single, 3=divorced, 0=others)
 \item AGE: Age in years
-\item PAY\_0: Repayment status in September, 2005 (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
-\item PAY\_2: Repayment status in August, 2005 (scale same as above)
-\item PAY\_3: Repayment status in July, 2005 (scale same as above)
-\item PAY\_4: Repayment status in June, 2005 (scale same as above)
-\item PAY\_5: Repayment status in May, 2005 (scale same as above)
-\item PAY\_6: Repayment status in April, 2005 (scale same as above)
-\item BILL\_AMT1: Amount of bill statement in September, 2005 (NT dollar)
-\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
-\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
-\item BILL\_AMT4: Amount of bill statement in June, 2005 (NT dollar)
-\item BILL\_AMT5: Amount of bill statement in May, 2005 (NT dollar)
-\item BILL\_AMT6: Amount of bill statement in April, 2005 (NT dollar)
-\item PAY\_AMT1: Amount of previous payment in September, 2005 (NT dollar)
-\item PAY\_AMT2: Amount of previous payment in August, 2005 (NT dollar)
-\item PAY\_AMT3: Amount of previous payment in July, 2005 (NT dollar)
-\item PAY\_AMT4: Amount of previous payment in June, 2005 (NT dollar)
-\item PAY\_AMT5: Amount of previous payment in May, 2005 (NT dollar)
-\item PAY\_AMT6: Amount of previous payment in April, 2005 (NT dollar)
+\item PAY\_0, PAY\_2, $\hdots$, PAY\_6: Repayment status in September, August, $\hdots$, April 2005 respectively (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
+%\item PAY\_2: Repayment status in August, 2005 (scale same as above)
+%\item PAY\_3: Repayment status in July, 2005 (scale same as above)
+%\item PAY\_4: Repayment status in June, 2005 (scale same as above)
+%\item PAY\_5: Repayment status in May, 2005 (scale same as above)
+%\item PAY\_6: Repayment status in April, 2005 (scale same as above)
+\item BILL\_AMT1, BILL\_AMT2, $\hdots$,  BILL\_AMT6: Amount of bill statement in September, August, $\hdots$, April 2005 respectively (NT dollar)
+%\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
+%\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
+%\item BILL\_AMT4: Amount of bill statement in June, 2005 (NT dollar)
+%\item BILL\_AMT5: Amount of bill statement in May, 2005 (NT dollar)
+%\item BILL\_AMT6: Amount of bill statement in April, 2005 (NT dollar)
+\item PAY\_AMT1, PAY\_AMT2, $\hdots$, PAY\_AMT6: Amount of previous payment in September, August, $\hdots$, April 2005 respectively (NT dollar)
+%\item PAY\_AMT2: Amount of previous payment in August, 2005 (NT dollar)
+%\item PAY\_AMT3: Amount of previous payment in July, 2005 (NT dollar)
+%\item PAY\_AMT4: Amount of previous payment in June, 2005 (NT dollar)
+%\item PAY\_AMT5: Amount of previous payment in May, 2005 (NT dollar)
+%\item PAY\_AMT6: Amount of previous payment in April, 2005 (NT dollar)
 \item default.payment.next.month: Default payment (1=yes, 0=no)
 \end{itemize}
 
