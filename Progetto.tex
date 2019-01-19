@@ -1,88 +1,151 @@
-\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stylish Article
+% LaTeX Template
+% Version 2.1 (1/10/15)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Mathias Legrand (legrand.mathias@gmail.com) 
+% With extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{amsmath}
-\usepackage[margin=0.7in,
-            bottom=1.2in]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{enumitem}
-\usepackage{multicol}
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
 
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=blue,
-	urlcolor=blue
-}
+\documentclass[fleqn,10pt]{SelfArx} % Document font size and equations flushed left
 
-\title{Machine Learning - project}
-\author{Kasela Pranav, Pagani Miriam Beatrice, Saviano Marco, Zaccaria Antonella}
-\date{}
+\usepackage[english]{babel} % Specify a different language here - english by default
 
-\begin{document}
-\maketitle
+\usepackage{lipsum} % Required to insert dummy text. To be removed otherwise
 
-%\tableofcontents
+%----------------------------------------------------------------------------------------
+%	COLUMNS
+%----------------------------------------------------------------------------------------
+
+\setlength{\columnsep}{0.55cm} % Distance between the two columns of text
+\setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
+
+%----------------------------------------------------------------------------------------
+%	COLORS
+%----------------------------------------------------------------------------------------
+
+\definecolor{color1}{RGB}{0,0,90} % Color of the article title and sections
+\definecolor{color2}{RGB}{0,20,20} % Color of the boxes behind the abstract and headings
+
+%----------------------------------------------------------------------------------------
+%	HYPERLINKS
+%----------------------------------------------------------------------------------------
+
+\usepackage{hyperref} % Required for hyperlinks
+\hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE INFORMATION
+%----------------------------------------------------------------------------------------
+
+\JournalInfo{Università degli Studi di Milano Bicocca} % Journal information
+\Archive{ML Project} % Additional notes (e.g. copyright, DOI, review/research article)
 
 
-~\\ %vai a capo
-\begin{abstract}
-	Credit card default happens when you've become severely delinquent on your credit card payment.
+\PaperTitle{Machine Learning - project} % Article title
 
-  It's a serious credit card status that not only affects your standing with that credit card issuer, but also your credit standing in general and your ability to get approved for credit cards, loans, and other credit-based services.
+\Authors{Kasela Pranav\textsuperscript{1}, Pagani Miriam Beatrice\textsuperscript{2}, Saviano Marco\textsuperscript{3}, Zaccaria Antonella\textsuperscript{4}}
+
+\affiliation{\textsuperscript{1}\textit{Matricola: 846965, Department of Informatics, University of Bicocca}} 
+\affiliation{\textsuperscript{2}\textit{Department of Informatics, University of Bicocca}} \affiliation{\textsuperscript{3}\textit{Department of Informatics, University of Bicocca}}
+\affiliation{\textsuperscript{4}\textit{Department of Informatics, University of Bicocca}}
+
+\Keywords{Keyword1 --- Keyword2 --- Keyword3} % Keywords - if you don't want any simply remove all the text between the curly brackets
+\newcommand{\keywordname}{Keywords} % Defines the keywords heading name
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\Abstract{Credit card default happens when you've become severely delinquent on your credit card payment.
+	
+	It's a serious credit card status that not only affects your standing with that credit card issuer, but also your credit standing in general and your ability to get approved for credit cards, loans, and other credit-based services.
 	
 	When you accept a credit card, you agree to certain terms, e.g. you agree to make your minimum payment by the due date listed on your credit card statement.
 	
-	 If you miss the minimum credit card payment six months in a row, your credit card will be in default; your credit card issuer will likely close your account and report the default to the credit bureaus.
+	If you miss the minimum credit card payment six months in a row, your credit card will be in default; your credit card issuer will likely close your account and report the default to the credit bureaus.
 	
 	By the time your credit card defaults, you've likely accumulated hundreds of dollars in fees and interest charges. 
 	
 	
-    Unfortunately, your options for clearing up the credit card default may be limited because of the number of payments you've missed on your account. 
-    
-    For this reason, assuming truthful the given data, we show the procedure used to create prevision algorithm aiming to foresee the default payment's client.
-    
-    
-\end{abstract}
-
-\begin{multicols}{2}
-
-\tableofcontents
+	Unfortunately, your options for clearing up the credit card default may be limited because of the number of payments you've missed on your account. 
 	
-\section{Introduction}
-This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
+	For this reason, assuming truthful the given data, we show the procedure used to create prevision algorithm aiming to foresee the default payment's client.
+}
 
-The attributes and their characteristics are:
-\begin{itemize}[noitemsep]
-\item ID: ID of each client
-\item LIMIT\_BAL: Amount of given credit in NT dollars
-\item SEX: Gender (1=male, 2=female)
-\item EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 0,5,6=unknown)
-\item MARRIAGE: Marital status (1=married, 2=single, 3=divorced, 0=others)
-\item AGE: Age in years
-\item PAY\_0, PAY\_2, $\hdots$, PAY\_6: Repayment status in September, August, $\hdots$, April 2005 respectively (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
-%\item PAY\_2: Repayment status in August, 2005 (scale same as above)
-%\item PAY\_3: Repayment status in July, 2005 (scale same as above)
-%\item PAY\_4: Repayment status in June, 2005 (scale same as above)
-%\item PAY\_5: Repayment status in May, 2005 (scale same as above)
-%\item PAY\_6: Repayment status in April, 2005 (scale same as above)
-\item BILL\_AMT1, BILL\_AMT2, $\hdots$,  BILL\_AMT6: Amount of bill statement in September, August, $\hdots$, April 2005 respectively (NT dollar)
-%\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
-%\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
-%\item BILL\_AMT4: Amount of bill statement in June, 2005 (NT dollar)
-%\item BILL\_AMT5: Amount of bill statement in May, 2005 (NT dollar)
-%\item BILL\_AMT6: Amount of bill statement in April, 2005 (NT dollar)
-\item PAY\_AMT1, PAY\_AMT2, $\hdots$, PAY\_AMT6: Amount of previous payment in September, August, $\hdots$, April 2005 respectively (NT dollar)
-%\item PAY\_AMT2: Amount of previous payment in August, 2005 (NT dollar)
-%\item PAY\_AMT3: Amount of previous payment in July, 2005 (NT dollar)
-%\item PAY\_AMT4: Amount of previous payment in June, 2005 (NT dollar)
-%\item PAY\_AMT5: Amount of previous payment in May, 2005 (NT dollar)
-%\item PAY\_AMT6: Amount of previous payment in April, 2005 (NT dollar)
-\item default.payment.next.month: Default payment (1=yes, 0=no)
-\end{itemize}
+%----------------------------------------------------------------------------------------
 
-
-\end{multicols}
+\begin{document}
+	
+	\flushbottom % Makes all text pages the same height
+	
+	\maketitle % Print the title and abstract box
+	
+	\tableofcontents % Print the contents section
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	ARTICLE CONTENTS
+	%----------------------------------------------------------------------------------------
+	
+	\section*{Introduction} % The \section*{} command stops section numbering
+	
+	\addcontentsline{toc}{section}{Introduction} % Adds this section to the table of contents
+	This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
+	
+	The attributes and their characteristics are:
+	\begin{itemize}[noitemsep]
+		\item ID: ID of each client
+		\item LIMIT\_BAL: Amount of given credit in NT dollars
+		\item SEX: Gender (1=male, 2=female)
+		\item EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 0,5,6=unknown)
+		\item MARRIAGE: Marital status (1=married, 2=single, 3=divorced, 0=others)
+		\item AGE: Age in years
+		\item PAY\_0, PAY\_2, $\hdots$, PAY\_6: Repayment status in September, August, $\hdots$, April 2005 respectively (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
+		%\item PAY\_2: Repayment status in August, 2005 (scale same as above)
+		%\item PAY\_3: Repayment status in July, 2005 (scale same as above)
+		%\item PAY\_4: Repayment status in June, 2005 (scale same as above)
+		%\item PAY\_5: Repayment status in May, 2005 (scale same as above)
+		%\item PAY\_6: Repayment status in April, 2005 (scale same as above)
+		\item BILL\_AMT1, BILL\_AMT2, $\hdots$,  BILL\_AMT6: Amount of bill statement in September, August, $\hdots$, April 2005 respectively (NT dollar)
+		%\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
+		%\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
+		%\item BILL\_AMT4: Amount of bill statement in June, 2005 (NT dollar)
+		%\item BILL\_AMT5: Amount of bill statement in May, 2005 (NT dollar)
+		%\item BILL\_AMT6: Amount of bill statement in April, 2005 (NT dollar)
+		\item PAY\_AMT1, PAY\_AMT2, $\hdots$, PAY\_AMT6: Amount of previous payment in September, August, $\hdots$, April 2005 respectively (NT dollar)
+		%\item PAY\_AMT2: Amount of previous payment in August, 2005 (NT dollar)
+		%\item PAY\_AMT3: Amount of previous payment in July, 2005 (NT dollar)
+		%\item PAY\_AMT4: Amount of previous payment in June, 2005 (NT dollar)
+		%\item PAY\_AMT5: Amount of previous payment in May, 2005 (NT dollar)
+		%\item PAY\_AMT6: Amount of previous payment in April, 2005 (NT dollar)
+		\item default.payment.next.month: Default payment (1=yes, 0=no)
+	\end{itemize}
+	
+	%------------------------------------------------
+	
+	\section{Quello dopo}
+	
+	%----------------------------------------------------------------------------------------
+	%	REFERENCE LIST
+	%----------------------------------------------------------------------------------------
+	\phantomsection
+	\bibliographystyle{unsrt}
+	\bibliography{biblio}
+	
+	%----------------------------------------------------------------------------------------
+	
 \end{document}
