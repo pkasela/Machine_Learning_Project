@@ -6,3 +6,6 @@
 *.toc
 *.txt
 *.out
+#File generated from .bib file
+*.bbl
+*.blg
