@@ -25,7 +25,7 @@
 \usepackage[english]{babel} % Specify a different language here - english by default
 
 \usepackage{lipsum} % Required to insert dummy text. To be removed otherwise
-
+ \usepackage{python}
 %----------------------------------------------------------------------------------------
 %	COLUMNS
 %----------------------------------------------------------------------------------------
@@ -46,6 +46,29 @@
 
 \usepackage{hyperref} % Required for hyperlinks
 \hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
 
 %----------------------------------------------------------------------------------------
 %	ARTICLE INFORMATION
@@ -60,8 +83,9 @@
 \Authors{Kasela Pranav\textsuperscript{1}, Pagani Miriam Beatrice\textsuperscript{2}, Saviano Marco\textsuperscript{3}, Zaccaria Antonella\textsuperscript{4}}
 
 \affiliation{\textsuperscript{1}\textit{Matricola: 846965, Department of Informatics, University of Bicocca}} 
-\affiliation{\textsuperscript{2}\textit{Department of Informatics, University of Bicocca}} \affiliation{\textsuperscript{3}\textit{Department of Informatics, University of Bicocca}}
-\affiliation{\textsuperscript{4}\textit{Department of Informatics, University of Bicocca}}
+\affiliation{\textsuperscript{2}\textit{Matricola: 794274, Department of Informatics, University of Bicocca}}
+ \affiliation{\textsuperscript{3}\textit{Matricola: 793516, Department of Informatics, University of Bicocca}}
+\affiliation{\textsuperscript{4}\textit{Matricola: 848647, Department of Informatics, University of Bicocca}}
 
 \Keywords{Keyword1 --- Keyword2 --- Keyword3} % Keywords - if you don't want any simply remove all the text between the curly brackets
 \newcommand{\keywordname}{Keywords} % Defines the keywords heading name
@@ -104,15 +128,15 @@
 	\section*{Introduction\cite{DataSet}} % The \section*{} command stops section numbering
 	
 	\addcontentsline{toc}{section}{Introduction} % Adds this section to the table of contents
-	This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of credit card clients in Taiwan from April 2005 to September 2005.
+	This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of 30,000 credit card clients in Taiwan from April 2005 to September 2005.
 	
-	The attributes and their characteristics are:
+	The 25 attributes and their characteristics are:
 	\begin{itemize}[noitemsep]
 		\item ID: ID of each client
 		\item LIMIT\_BAL: Amount of given credit in NT dollars
 		\item SEX: Gender (1=male, 2=female)
 		\item EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 0,5,6=unknown)
-		\item MARRIAGE: Marital status (1=married, 2=single, 3=divorced, 0=others)
+		\item MARRIAGE: Marital status (1=married, 2=single, 3=others, 0=others)
 		\item AGE: Age in years
 		\item PAY\_0: Repayment status in September 2005 (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
 		\item PAY\_2: Repayment status in August, 2005 (scale same as above)
@@ -120,7 +144,7 @@
 		\item PAY\_4: Repayment status in June, 2005 (scale same as above)
 		\item PAY\_5: Repayment status in May, 2005 (scale same as above)
 		\item PAY\_6: Repayment status in April, 2005 (scale same as above)
-		item BILL\_AMT1: Amount of bill statement in September 2005 respectively (NT dollar)
+		\item BILL\_AMT1: Amount of bill statement in September 2005 respectively (NT dollar)
 		\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
 		\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
 		\item BILL\_AMT4: Amount of bill statement in June, 2005 (NT dollar)
@@ -140,7 +164,35 @@
 	\textbf{Goal:}\newline
 	Looking at the problem we see a potential use in predicting month by month, the default of the clients.
 	
-	\section{Next Chapter Name}
+	\section{Preprocessing}
+	Before proceeding with Feature Engineering and the  implementation of Machine Learning, we analyze the dataset with Descriptive Statistics in order to understand more the composition and tendencies of our data.
+	
+	We notice that in the attribute \textit{EDUCATION} the values 0,5,6 are unknown and there are only 345 values, so we decide to proceed with the record removal.
+	
+	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated; the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
+	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes.
+	
+	For the \textit{AGE} attribute we decide to discretize, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
+	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced.
+	
+	In the \textit{EDUCATION} attribute we combine \textit{0=others} with \textit{0=others}.
+	We combine \textit{SEX} and \textit{MARRIAGE} to reduce the dimension using the following python code:
+		
+	\begin{lstlisting}
+	//df is our dataframe given in the input node
+	df.loc[((df.SEX == 1) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 1 //married man
+	df.loc[((df.SEX == 1) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 2 //single man
+	df.loc[((df.SEX == 1) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 3 //divorced man
+	df.loc[((df.SEX == 2) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 4 //married woman
+	df.loc[((df.SEX == 2) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 5 //single woman
+	df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 //divorced woman
+	\end{lstlisting}
+	
+	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$,PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum to 1 and apply the logarithm to the later.
+	
+	To start studing the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
+	
+	\section{Classification}
 	
 	%----------------------------------------------------------------------------------------
 	%	REFERENCE LIST
