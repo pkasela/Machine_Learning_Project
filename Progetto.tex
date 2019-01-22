@@ -168,7 +168,7 @@
 	Before proceeding with Feature Engineering and the  implementation of Machine Learning, we analyze the dataset with Descriptive Statistics in order to understand more the composition and tendencies of our data.
 	
 	We notice that in the attribute \textit{EDUCATION} the values 0,5,6 are unknown and there are only 345 values, so we decide to proceed with the record removal.
-	
+	%grafico correlazione
 	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated; the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
 	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes.
 	
@@ -193,7 +193,87 @@
 	To start studing the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
 	
 	\section{Classification}
+	The models selected for the classifications are: 
+	\begin{itemize}[noitemsep]
+		\item MLP
+		\item Support Vector Machine: SPegasos
+		\item NaiveBayes
+		
+		\item Bayesian Network:
+		\begin{itemize}[noitemsep]
+				\item NBTree
+				\item BayesNet
+		\end{itemize}
+		
+		\item  Heuristic:
+		\begin{itemize}[noitemsep]
+			 \item J48
+			 \item RandomForest
+			 \item DecisionTree
+		\end{itemize}
+		
+		\item Logistic
+		
+		
+	\end{itemize}
+The target class has 77.7\% of no defaulters, 22.3\% of defaulters, so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
+The optimal measure could be either Recall or Precision, depending on bank's preference.
+We decide to use two measures: harmonic mean between Recall and Precision: $F_1-$measure and AUC of the ROC Curve.
+
+~\\
+%grafico imbalance
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{llllll}
+		\toprule
+		Classifier & Recall & Precision & $F_1-$measure & Accuracy & AUC\\
+		\bottomrule
+		MLP & 0.417 & 0.620 & 0.50 & 0.813 & 0.749\\
+		SPegasos & 0 & NaN & NaN & 0.777 & 0.5\\
+		NaiveBayes & 0.519 & 0.465 & 0.490 & 0.760 & 0.718\\
+		NBTree & 0.460 & 0.562 & 0.505 & 0.800 & 0.744\\
+		BayesNet(TANB) & 0.438 & 0.602 & 0.507 & 0.810 & 0.753\\
+		J48 & 0.331 & 0.615 & 0.431 & 0.805 & 0.657\\
+		RandomForest & 0.343 & 0.614 & 0.441 & 0.806 & 0.724\\
+		DecisionTree & 0.411 & 0.408 & 0.410 & 0.736 & 0.625\\
+		Logistic & 0.172 & 0.649 & 0.272 & 0.795 & 0.737\\
+		\bottomrule
+		
+\end{tabular}}
+~\\
+~\\
+
+The J48's method behaves like a ZeroRule, it classifies all clients as non defaulters.
+For the Recall Measure NaiveBayes is the optimal classifier, but it has a low score of 0.519, while using the $F_1-$measure or AUC the best classifiers are MLP, NBTree and BayesNet.
+
+\section{Feature Selection}
+For the feature selection we use 5 filters:
+\begin{itemize}[noitemsep]
+	\item Gain Ratio feature evaluation
+	\item Information Gain Ranking Filter
+	\item Symmetrical Uncertainly Ranking Filter
+	\item Relief Ranking Filter(k=10)
+	\item Correlation Ranking Filter
 	
+\end{itemize}
+
+But all these filters select all attributes. By using these filters we gain no additional information.
+The next approach is to use a Wrapper, we decide to use as the classifier BayesNet with 10 folds using as evaluation measure AUC.
+The wrapper selects 12 attributes:
+\begin{itemize}[noitemsep]
+\item LIMIT\_BAL
+\item EDUCATION
+\item PAY\_0
+\item PAY\_2
+\item PAY\_3
+\item PAY\_4
+\item PAY\_6
+\item PAY\_AMT1
+\item PAY\_AMT2
+\item PAY\_AMT4
+\item AVG\_BILL\_AMT
+\item SEX\_MARRIAGE
+\end{itemize}
+
 	%----------------------------------------------------------------------------------------
 	%	REFERENCE LIST
 	%----------------------------------------------------------------------------------------
