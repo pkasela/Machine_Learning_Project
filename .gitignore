@@ -9,3 +9,4 @@
 #File generated from .bib file
 *.bbl
 *.blg
+*.DS_Store
