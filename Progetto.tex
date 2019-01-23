@@ -25,7 +25,9 @@
 \usepackage[english]{babel} % Specify a different language here - english by default
 
 \usepackage{lipsum} % Required to insert dummy text. To be removed otherwise
- \usepackage{python}
+ 
+\usepackage{graphicx}
+\graphicspath{ {./img/} } %setting images folder
 %----------------------------------------------------------------------------------------
 %	COLUMNS
 %----------------------------------------------------------------------------------------
@@ -46,6 +48,8 @@
 
 \usepackage{hyperref} % Required for hyperlinks
 \hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+
 \usepackage{listings}
 \usepackage{color}
 
@@ -54,7 +58,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-	language=Java,
+	language=Python,
 	aboveskip=3mm,
 	belowskip=3mm,
 	showstringspaces=false,
@@ -167,28 +171,34 @@
 	\section{Preprocessing}
 	Before proceeding with Feature Engineering and the  implementation of Machine Learning, we analyze the dataset with Descriptive Statistics in order to understand more the composition and tendencies of our data.
 	
-	We notice that in the attribute \textit{EDUCATION} the values 0,5,6 are unknown and there are only 345 values, so we decide to proceed with the record removal.
-	%grafico correlazione
+	We notice that in the attribute \textit{EDUCATION} the values 0,5 and 6 are unknown while the value 4 is other, so we decide to categorize 0,5 and 6 as other too.
+	\begin{figure}[h]
+		\includegraphics[width=\linewidth]{correlation.png}
+		\caption{Correlation Plot of all the attributes}
+	\end{figure}
+	
+	
 	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated; the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
 	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes.
 	
 	For the \textit{AGE} attribute we decide to discretize, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
 	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced.
 	
-	In the \textit{EDUCATION} attribute we combine \textit{0=others} with \textit{0=others}.
+	In the \textit{EDUCATION} attribute we combine \textit{0=others} with \textit{3=others} (it is considered to be divorced or separated).
 	We combine \textit{SEX} and \textit{MARRIAGE} to reduce the dimension using the following python code:
-		
-	\begin{lstlisting}
-	//df is our dataframe given in the input node
-	df.loc[((df.SEX == 1) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 1 //married man
-	df.loc[((df.SEX == 1) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 2 //single man
-	df.loc[((df.SEX == 1) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 3 //divorced man
-	df.loc[((df.SEX == 2) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 4 //married woman
-	df.loc[((df.SEX == 2) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 5 //single woman
-	df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 //divorced woman
-	\end{lstlisting}
 	
-	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$,PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum to 1 and apply the logarithm to the later.
+		
+\begin{lstlisting}
+#df is our dataframe given in the input node
+df.loc[((df.SEX == 1) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 1 #married man
+df.loc[((df.SEX == 1) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 2 #single man
+df.loc[((df.SEX == 1) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 3 #divorced man
+df.loc[((df.SEX == 2) & (df.MARRIAGE == 1)) , 'SEX_MARRIAGE'] = 4 #married woman
+df.loc[((df.SEX == 2) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 5 #single woman
+df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woman
+\end{lstlisting}
+	
+	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$, PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum to 1 and apply the logarithm to the later. We notice that the distribution of the \textit{AVG\_BILL\_AMT} has one strong outlier so we remove it to avoid overfitting and standardize the latter for it to be more sparse.
 	
 	To start studing the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
 	
@@ -216,34 +226,45 @@
 		
 		
 	\end{itemize}
+
+	\begin{figure}[h]
+	\includegraphics[width=\linewidth]{class.png}
+	\caption{Target Class Distribution}
+	\end{figure}
+
 The target class has 77.7\% of no defaulters, 22.3\% of defaulters, so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
 The optimal measure could be either Recall or Precision, depending on bank's preference.
 We decide to use two measures: harmonic mean between Recall and Precision: $F_1-$measure and AUC of the ROC Curve.
 
-~\\
-%grafico imbalance
+\begin{table}
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{llllll}
 		\toprule
 		Classifier & Recall & Precision & $F_1-$measure & Accuracy & AUC\\
 		\bottomrule
-		MLP & 0.417 & 0.620 & 0.50 & 0.813 & 0.749\\
-		SPegasos & 0 & NaN & NaN & 0.777 & 0.5\\
-		NaiveBayes & 0.519 & 0.465 & 0.490 & 0.760 & 0.718\\
-		NBTree & 0.460 & 0.562 & 0.505 & 0.800 & 0.744\\
-		BayesNet(TANB) & 0.438 & 0.602 & 0.507 & 0.810 & 0.753\\
-		J48 & 0.331 & 0.615 & 0.431 & 0.805 & 0.657\\
-		RandomForest & 0.343 & 0.614 & 0.441 & 0.806 & 0.724\\
-		DecisionTree & 0.411 & 0.408 & 0.410 & 0.736 & 0.625\\
-		Logistic & 0.172 & 0.649 & 0.272 & 0.795 & 0.737\\
+		\rule{0pt}{3ex}    
+		MLP & 0.474 & 0.565 & 0.515 & 0.803 & 0.722\\
+		SPegasos & 0.202 & 0.721 & 0.316 & 0.806 & 0.59\\
+		NaiveBayes & 0.486 & 0.488 & 0.487 & 0.773 & 0.742\\
+		NBTree & 0.481 & 0.53 & 0.504 & 0.791 & 0.754\\
+		BayesNet(TANB) & 0.421 & 0.586 & 0.49 & 0.806 & 0.754\\
+		J48 & 0.325 & 0.631 & 0.429 & 0.809 & 0.629\\
+		RandomForest & 0.325 & 0.612 & 0.425 & 0.805 & 0.723\\
+		DecisionTree & 0.401 & 0.402 & 0.401 & 0.736 & 0.635\\
+		Logistic & 0.221 & 0.685 & 0.335 & 0.805 & 0.745\\
 		\bottomrule
 		
 \end{tabular}}
-~\\
-~\\
+\caption{Evaluation measures using holdout}
+\end{table}
 
-The J48's method behaves like a ZeroRule, it classifies all clients as non defaulters.
-For the Recall Measure NaiveBayes is the optimal classifier, but it has a low score of 0.519, while using the $F_1-$measure or AUC the best classifiers are MLP, NBTree and BayesNet.
+\noindent
+
+For the Recall Measure NaiveBayes is the optimal classifier, but it has a low precision of 0.488, while using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Talk about the 3 fold cross validation%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Feature Selection}
 For the feature selection we use 5 filters:
@@ -253,12 +274,11 @@ For the feature selection we use 5 filters:
 	\item Symmetrical Uncertainly Ranking Filter
 	\item Relief Ranking Filter(k=10)
 	\item Correlation Ranking Filter
-	
 \end{itemize}
 
 But all these filters select all attributes. By using these filters we gain no additional information.
-The next approach is to use a Wrapper, we decide to use as the classifier BayesNet with 10 folds using as evaluation measure AUC.
-The wrapper selects 12 attributes:
+The next approach is to use a Wrapper, we decide to use as the classifier BayesNet and NBTree with 10 folds using as evaluation measure AUC.
+The wrapper with BayesNet selects 10 attributes:
 \begin{itemize}[noitemsep]
 \item LIMIT\_BAL
 \item EDUCATION
@@ -268,15 +288,30 @@ The wrapper selects 12 attributes:
 \item PAY\_4
 \item PAY\_6
 \item PAY\_AMT1
-\item PAY\_AMT2
 \item PAY\_AMT4
-\item AVG\_BILL\_AMT
 \item SEX\_MARRIAGE
+\end{itemize}
+While the wrapper with NBTree select the following 10:
+\begin{itemize}[noitemsep]
+	\item LIMIT\_BAL
+	\item EDUCATION
+	\item PAY\_0
+	\item PAY\_2
+	\item PAY\_3
+	\item PAY\_6
+	\item PAY\_AMT3
+	\item PAY\_AMT4
+	\item AgeBin
+	\item SEX\_MARRIAGE
 \end{itemize}
 
 	%----------------------------------------------------------------------------------------
 	%	REFERENCE LIST
 	%----------------------------------------------------------------------------------------
+	\nocite{DataSet}
+	\nocite{LucaNoteBook}
+	\nocite{Default}
+	\nocite{ItalPress}
 	\phantomsection
 	\bibliographystyle{unsrt}
 	\bibliography{biblio}
