@@ -175,10 +175,11 @@
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{correlation.png}
 		\caption{Correlation Plot of all the attributes}
+		\label{fig:corr}
 	\end{figure}
 	
 	
-	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated; the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
+	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated (Figure \ref{fig:corr}); the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
 	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes.
 	
 	For the \textit{AGE} attribute we decide to discretize, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
@@ -230,9 +231,10 @@ df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woma
 	\begin{figure}[h]
 	\includegraphics[width=\linewidth]{class.png}
 	\caption{Target Class Distribution}
+	\label{fig:class}
 	\end{figure}
 
-The target class has 77.7\% of no defaulters, 22.3\% of defaulters, so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
+The target class has 77.7\% of no defaulters, 22.3\% of defaulters (Figure \ref{fig:class}), so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
 The optimal measure could be either Recall or Precision, depending on bank's preference.
 We decide to use two measures: harmonic mean between Recall and Precision: $F_1-$measure and AUC of the ROC Curve.
 
@@ -256,17 +258,13 @@ We decide to use two measures: harmonic mean between Recall and Precision: $F_1-
 		\bottomrule
 		
 \end{tabular}}
-\label{table:holdout}
 \caption{Evaluation measures using Holdout}
+\label{table:holdout}
 \end{table}
 
 \noindent
-In the table ~\ref{table:holdout} we see that using holdout, for the Recall Measure NaiveBayes and NBTree are the optimal classifiers, but NaiveBayes has a low precision of 0.488. Using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%Talk about the 3 fold cross validation%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In the Table \ref{table:holdout} we see that using holdout, for the Recall Measure NaiveBayes and NBTree are the optimal classifiers, but NaiveBayes has a low precision of 0.488. Using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.\newline
+%3 folds is here
 Since the Holdout method depends on the particular test set, we use the 3-Folds Cross Validation obtaining:
 
 \begin{table}[h]
@@ -278,22 +276,28 @@ Since the Holdout method depends on the particular test set, we use the 3-Folds 
 			\rule{0pt}{3ex}    
 			MLP & 0.372 & 0.662 & 0.476 & 0.819 & 0.773\\
 			SPegasos & 0.22 & 0.703 & 0.334 & 0.807 & 0.597\\
-			NaiveBayes & 0.502 & 0.488 & 0.487 & 0.772 & 0.749\\
-			NBTree & 0.456 & 0.53 & 0.504 & 0.8 & 0.748\\
-			BayesNet(TANB) & 0.427 & 0.586 & 0.49 & 0.808 & 0.759\\
-			J48 & 0.325 & 0.631 & 0.429 & 0.809 & 0.629\\
-			RandomForest & 0.325 & 0.612 & 0.425 & 0.805 & 0.723\\
-			DecisionTree & 0.401 & 0.402 & 0.401 & 0.736 & 0.635\\
-			Logistic & 0.221 & 0.685 & 0.335 & 0.805 & 0.745\\
+			
+			NaiveBayes & 0.503 & 0.485 & 0.494 & 0.772 & 0.749\\
+			NBTree & 0.456 & 0.561 & 0.501 & 0.8 & 0.748\\
+			BayesNet(TANB) & 0.427 & 0.59 & 0.495 & 0.808 & 0.759\\
+		 	
+		 	J48 & 0.351 & 0.63 & 0.451 & 0.811 & 0.651\\
+			RandomForest & 0.326 & 0.608 & 0.424 & 0.804 & 0.729\\
+			DecisionTree & 0.408 & 0.406 & 0.407 & 0.737 & 0.634\\
+			Logistic & 0.241 & 0.673 & 0.355 & 0.806 & 0.748\\
 			\bottomrule
 			
 	\end{tabular}}
-	\label{table:3fcv}
 	\caption{Evaluation measures using 3-Folds Cross Validation}
+	\label{table:3fcv}
 \end{table}
 
+\noindent
+In the Table \ref{table:3fcv} we see that using 3 Folds Cross Validation, for the Recall Measure NaiveBayes is the optimal classifiers. Using the $F_1-$measure the best classifiers are NBTree, BayesNet and NaiveBayes. While for the AUC the best one is the MLP.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%ROC Curve images%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Feature Selection}
 For the feature selection we use 5 filters:
