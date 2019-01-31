@@ -335,12 +335,13 @@ While the wrapper with NaiveBayes select the following 10:
 	\item AgeBin
 	\item SEX\_MARRIAGE
 \end{itemize}
+
+
 \section{Evaluation[title]}
 In this phase we evaluate the same models that we used for feature selection. \newline
-The Tables \ref{table:holdnb}, \ref{table:3fcvNB} are optained after applying the Feature Selection with NaiveBayes. 
-The latter shows that AUC measure increases in Bayesian models and others remains more or less unchanged. 
-The F$_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better. 
-
+The Tables \ref{table:holdNB}, \ref{table:3fcvNB} are obtained after applying the Feature Selection with NaiveBayes. 
+The latter shows that AUC measure increases in Bayesian models and remains more or less unchanged for others. 
+The F$_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better without the confidence interval.
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -364,7 +365,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 			
 	\end{tabular}}
 	\caption{Evaluation measures using Holdout}
-	\label{table:holdnb}
+	\label{table:holdNB}
 \end{table} 
 
 \begin{table}[h!]
@@ -391,7 +392,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\caption{Evaluation measures using 3-Folds Cross Validation}
 	\label{table:3fcvNB}
 \end{table} 
-\noindent The benefit from the Feature Selection is that the number of attributes is reduced from 17 to 10, while we don't see any considerable statistical difference between the initial model and the model obtained after the Feature Selection. 
+\noindent The benefit from the Feature Selection is that the number of attributes is reduced from 17 to 10, while it doesn't seem to have any considerable statistical difference between the initial model and the model obtained after the Feature Selection.
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -417,7 +418,6 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\caption{Evaluation measures using Holdout}
 	\label{table:holdBN}
 \end{table}
-~\newline
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -444,8 +444,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\caption{Evaluation measures using 3 Fold Cross Validation}
 	\label{table:3fcvBN}
 \end{table}
- ~\newline
- 
+
 	%----------- -----------------------------------------------------------------------------
 	%	REFERENCE LIST
 	%----------------------------------------------------------------------------------------
