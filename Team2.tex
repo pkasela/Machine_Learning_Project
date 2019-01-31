@@ -308,7 +308,7 @@ For the feature selection we use 5 filters:
 \end{itemize}
 
 But all these filters select all attributes. By using these filters we gain no additional information.
-The next approach is to use a Wrapper, we decide to use as the classifier BayesNet and NaiveBayes with 10 folds using as evaluation measure AUC.
+The next approach is to use a Wrapper, we decide to use as the classifier BayesNet and NaiveBayes with 5 folds using as evaluation measure AUC.
 The wrapper with BayesNet selects 10 attributes:
 \begin{itemize}[noitemsep]
 \item LIMIT\_BAL
@@ -322,7 +322,7 @@ The wrapper with BayesNet selects 10 attributes:
 \item PAY\_AMT4
 \item SEX\_MARRIAGE
 \end{itemize}
-While the wrapper with NaiveBayes select the following 10:
+While the wrapper with NaiveBayes select the following 11:
 \begin{itemize}[noitemsep]
 	\item LIMIT\_BAL
 	\item EDUCATION
@@ -332,13 +332,16 @@ While the wrapper with NaiveBayes select the following 10:
 	\item PAY\_6
 	\item PAY\_AMT3
 	\item PAY\_AMT4
+	\item AVG\_BILL\_AMT
 	\item AgeBin
 	\item SEX\_MARRIAGE
 \end{itemize}
 
 
-\section{Evaluation[title]}
-In this phase we evaluate the same models that we used for feature selection. \newline
+\subsection{Evaluation}
+In this phase we evaluate the same models that we used for feature selection.
+
+\subsubsection{Wrapper NaiveBayes}
 The Tables \ref{table:holdNB}, \ref{table:3fcvNB} are obtained after applying the Feature Selection with NaiveBayes. 
 The latter shows that AUC measure increases in Bayesian models and remains more or less unchanged for others. 
 The F$_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better without the confidence interval.
@@ -367,7 +370,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\caption{Evaluation measures using Holdout}
 	\label{table:holdNB}
 \end{table} 
-
+\pagebreak
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
 		\begin{tabular}{llllll}
@@ -393,6 +396,9 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\label{table:3fcvNB}
 \end{table} 
 \noindent The benefit from the Feature Selection is that the number of attributes is reduced from 17 to 10, while it doesn't seem to have any considerable statistical difference between the initial model and the model obtained after the Feature Selection.
+\subsubsection{Wrapper BayesNet}
+In the Tables \ref{table:holdBN}, \ref{table:3fcvBN} contain the value of the evaluation measures using Holdout and 3-folds Cross Validation respectively.
+
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -443,11 +449,41 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 	\end{tabular}}
 	\caption{Evaluation measures using 3 Fold Cross Validation}
 	\label{table:3fcvBN}
-\end{table}
+\end{table} 
+
+The same condition as NaiveBayes Wrapper persists here, 
+as a matter of fact, the AUC measure increases and in the Bayesian classifiers and the F$_1$-measure doesn't seem to have any significant statistical difference. 
+
+\section{Alternative Approach} 
+The alternative approach consists in a cost analysis, giving a more rate to eitheir Precision and Recall. 
+
+We proceed with a Brute Force Approach, trying some different cost matrix to select the most suitable one. \newline
+We found two matrices A(TN=0, FP=2, FN=5, TP=-1) and B(TN=-1, FP=2, FN=5, TP=0):
+$$
+A=\begin{bmatrix} 
+0 & +2 \\
++5 & -1 
+\end{bmatrix}
+$$
+$$
+B=\begin{bmatrix} 
+-1 & +2 \\
++5 & 0 
+\end{bmatrix}
+$$ 
+
+Using all the features, with matrix A we have Recall= 0.586, Precision = 0.454 and F$_1$-measure = 0.512, while with the matrix B we have Recall = 0.527, Precision = 0.49 and F$_1$-measure = 0.508. 
+We have improved the Recall of 0.1 in the first case despite of the reduction of Precision.
+
+After the Feature Selection the Recall is reduced from 0.586 to 0.546, instead the Precision is increased from 0.454 to 0.502; overall the F$_1$-measure is increased from 0.512 to 0.523 with the matrix A. 
+With the matrix B we have the same behaviour (Precision = 0.552, Recall = 0.484 and F$_1$-measure = 0.515). 
+
+
 
 	%----------- -----------------------------------------------------------------------------
 	%	REFERENCE LIST
 	%----------------------------------------------------------------------------------------
+	\newpage
 	\nocite{DataSet}
 	\nocite{LucaNoteBook}
 	\nocite{Default}
