@@ -23,8 +23,6 @@
 \documentclass[fleqn,10pt]{SelfArx} % Document font size and equations flushed left
 
 \usepackage[english]{babel} % Specify a different language here - english by default
-
-\usepackage{lipsum} % Required to insert dummy text. To be removed otherwise
  
 \usepackage{graphicx}
 \graphicspath{ {./img/} } %setting images folder
@@ -79,12 +77,12 @@
 %----------------------------------------------------------------------------------------
 
 \JournalInfo{Università degli Studi di Milano Bicocca} % Journal information
-\Archive{ML Project} % Additional notes (e.g. copyright, DOI, review/research article)
+\Archive{ML Project - Team 2} % Additional notes (e.g. copyright, DOI, review/research article)
 
 
-\PaperTitle{Machine Learning - Project (Dare Nome piu decente)} % Article title
+\PaperTitle{Credit Card Defaulters: A Predictive Model} % Article title
 
-\Authors{Kasela Pranav\textsuperscript{1}, Pagani Miriam Beatrice\textsuperscript{2}, Saviano Marco\textsuperscript{3}, Zaccaria Antonella\textsuperscript{4}}
+\Authors{Kasela Pranav\textsuperscript{1}, Pagani Miriam Beatrice\textsuperscript{2}, Savino Marco\textsuperscript{3}, Zaccaria Antonella\textsuperscript{4}}
 
 \affiliation{\textsuperscript{1}\textit{Matricola: 846965, Department of Informatics, University of Bicocca}} 
 \affiliation{\textsuperscript{2}\textit{Matricola: 794274, Department of Informatics, University of Bicocca}}
@@ -338,7 +336,11 @@ While the wrapper with NaiveBayes select the following 10:
 	\item SEX\_MARRIAGE
 \end{itemize}
 \section{Evaluation[title]}
-In this phase we evaluate the same models that we used for feature selection: 
+In this phase we evaluate the same models that we used for feature selection. \newline
+The Tables \ref{table:holdnb}, \ref{table:3fcvNB} are optained after applying the Feature Selection with NaiveBayes. 
+The latter shows that AUC measure increases in Bayesian models and others remains more or less unchanged. 
+The F$_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better. 
+
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -365,8 +367,6 @@ In this phase we evaluate the same models that we used for feature selection:
 	\label{table:holdnb}
 \end{table} 
 
-~\newline
-
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
 		\begin{tabular}{llllll}
@@ -391,7 +391,7 @@ In this phase we evaluate the same models that we used for feature selection:
 	\caption{Evaluation measures using 3-Folds Cross Validation}
 	\label{table:3fcvNB}
 \end{table} 
-~\newline
+\noindent The benefit from the Feature Selection is that the number of attributes is reduced from 17 to 10, while we don't see any considerable statistical difference between the initial model and the model obtained after the Feature Selection. 
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
