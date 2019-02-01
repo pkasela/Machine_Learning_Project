@@ -506,28 +506,42 @@ We use Holdout on the same test used for evaluating the feature selection measur
 
 In the case of Logistic we can see a drastic improvement in Recall from 0.261 to 0.605 and $F_1$-measure from 0.377 to 0.505. The Precision drops down from 0.676 to 0.433. \newline
 For the Gradient Boosted Trees we have more balanced values: Recall: 0.511, Precision: 0.555, $F_1$-measure: 0.532. 
-In the Figure \ref{fig:SMOTE_ROC} we can see that using ROC Curve, the Gradient Boosted Trees is a better classifier than Logistic for any \% of FPR.
+In the Figure \ref{fig:SMOTE_ROC} we can see that using ROC Curve, the Gradient Boosted Trees is a better classifier than Logistic.
 
 We decided to choose the SMOTE instead of a normal oversampling (taking the same record multiple times) because it is less prone to the overfitting phenomena.\newline
 To use SMOTE with  cross validation we need to apply SMOTE on the training set and not on the combination of training and validation set otherwise we won't have the right values of the various measures.
 Using SMOTE with 3-Folds Cross Validation we confirm the values obtained with Holdout.
 
 
-\section{Conclusion}
+\section{Conclusions}
+These results are certainly not god enough so that the models developed during this project can be directly used to predict a defaulter. 
+We analyzed and created/modified the features without any domain knowledge. 
+It might not be the best way of approaching the problem, since it could have brought us in the wrong direction and thus getting poor results.\newline
+We have shown different approached to improve the models, one of these approaches was using the cost matrix. The bank could use a domain expert to decide the costs of TP, TN, FP and FN, having the right cost matrix might improve significantly the models and we might even understand if the bank is interested in improving the Precision or Recall and proceed accordingly.\newline
+A practical use of the models just created could be to use the models with more than 50\% Recall and a decent value of Precision (more than 40-45\%). 
+Let's take as an example the Gradient Boosted Trees with SMOTE: We know that the models classifies 50\% of the defaulters with 50\% of precision, the bank can now concentrate on the defaulters classified by the model and use their domain experts to find the defaulters from it. 
+The bank does this usually with all clients now they can concentrate and thus invest less resources and still be able to obtain approximately 50\% of the defaulters.
+And with the cost matrix we might even increase the percentage of the defaulters found with the models.\newline
+Having more data would have been useful to have more information on the defaulter's behavior or even better: to find a pattern in the data (maybe using a clustering technique). Even having more attributes could be useful to find the pattern we talked about, some relevant attributes might be, in our opinion (with low or no domain knowledge): number of children, total family income, number of other accounts with credit card (if possible, even though two different banks might not cooperate to give away such information) and many more.
 
 %Human help, we find the half of the defaulter (half are not defaulter) so the workers can concentrate more on them using experience to find out the possible defaulters.
 
 %Smote- I will use it.
 
-
+	\begin{figure*}[ht!]
+		\centering
+		\includegraphics[width=\linewidth]{Workflow.png}
+		\caption{Knime Workflow Overview}
+	\end{figure*}
 	%----------- -----------------------------------------------------------------------------
-	%	REFERENCE LIST
+	%	REFERENCE LIST & the workflow overview
 	%----------------------------------------------------------------------------------------
-	\newpage
+
 	\nocite{DataSet}
 	\nocite{LucaNoteBook}
 	\nocite{Default}
 	\nocite{ItalPress}
+	\nocite{SMOTE}
 	\phantomsection
 	\bibliographystyle{unsrt}
 	\bibliography{biblio}
@@ -535,7 +549,5 @@ Using SMOTE with 3-Folds Cross Validation we confirm the values obtained with Ho
 	%----------------------------------------------------------------------------------------
 	
 	%\newpage
-	\begin{figure*}[h]
-		\includegraphics[width=\linewidth]{Workflow.png}
-	\end{figure*}
+
 \end{document}
