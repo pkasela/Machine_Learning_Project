@@ -262,6 +262,7 @@ We decide to use the following measures: Recall, Precision, $F_1-$measure and AU
 
 \noindent
 In the Table \ref{table:holdout} we see that using holdout, for the Recall measure NaiveBayes and NBTree are the optimal classifiers, but NaiveBayes has a low precision of 0.488. Using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.\newline
+
 %3 folds is here
 The Holdout method depends on the particular test set. We use the 3-Folds Cross Validation to have a less biased measure:
 
@@ -292,6 +293,14 @@ The Holdout method depends on the particular test set. We use the 3-Folds Cross 
 
 \noindent
 In the Table \ref{table:3fcv} we see that using 3 Folds Cross Validation, for the Recall measure NaiveBayes is the optimal classifiers. Using the $F_1-$measure the best classifiers are NBTree, BayesNet and NaiveBayes. While for the AUC the best one is the MLP.
+In Figure \ref{fig:ROC_3fcv} we plot the ROC curve of different classifiers using 3-Folds. We note that in the first of the two graphs in Figure \ref{fig:ROC_3fcv} Logistic is (except for a small portion of the domain) on the top of the other 3 curves and at a certain point J48 falls even below the random line, while in the second graph MLP is at the top but the ROC curves of the Bayesian classifiers are not far from the MLP curve.
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{ROC_III.png}
+	\includegraphics[width=\linewidth]{ROC_IandII.png}
+	\caption{ROC Curves using 3-Folds CV}
+	\label{fig:ROC_3fcv}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%ROC Curve images%%%%%%%%%%%%%
@@ -455,7 +464,7 @@ The same condition as NaiveBayes Wrapper persists here,
 as a matter of fact, the AUC measure increases and in the Bayesian classifiers and the $F_1$-measure doesn't seem to have any significant statistical difference. \newline
 The behavior of the two wrappers could have been expected to be similar since the attributes they choose are similar: except for \textit{PAY\_4} and \textit{PAY\_AMT1} the attributes of the BayesNet Wrapper are a subset of the attributes of NaiveBayes Wrapper.
 
-\section{Alternative Approaches} %approaches (I use also SMOTE[seems good])
+\section{Alternative Approaches}
 \subsection{Cost Analysis}
 One of the alternative approach consists in a cost analysis, giving a more weight to either Precision or Recall. 
 
@@ -485,23 +494,23 @@ The behavior is similar to the NaiveBayes Wrapper as expected.
 
 \subsection{SMOTE Technique}
 Another approach we used is to reduce the class imbalance oversampling the rare class in the training set using the \textit{SMOTE} technique. \newline
-We use smote on the training set filtered after the NaiveBayes Wrapper using the number of neighbors = 5. 
+We use SMOTE on the training set filtered after the NaiveBayes Wrapper using the number of neighbors = 5. 
 To evaluate the performance we use two models: Logistic and Gradient Boosted Trees. The trees and Logistic models are the one who usually benefit more using the SMOTE technique. 
 We use Holdout on the same test used for evaluating the feature selection measures. 
 
-In the case of Logistic we can see a drastic improvement in Recall from 0.261 to 0.605 and $F_1$-measure from 0.377 to 0.505. The Precision drops down from 0.676 to 0.433. \newline
-For the Gradient Boosted Trees we have more balanced values: Recall: 0.511, Precision: 0.555, $F_1$-measure: 0.532. 
-In the Figure \ref{fig:SMOTE_ROC} we can see that using ROC Curve Gradient Boosted Trees is a better classifier for any \% of FPR.
-
-\begin{figure}[h]
+\begin{figure}[h!]
 	\includegraphics[width=\linewidth]{ROC_SMOTE.png}
 	\caption{ROC Curves using SMOTE}
 	\label{fig:SMOTE_ROC}
 \end{figure} 
 
+In the case of Logistic we can see a drastic improvement in Recall from 0.261 to 0.605 and $F_1$-measure from 0.377 to 0.505. The Precision drops down from 0.676 to 0.433. \newline
+For the Gradient Boosted Trees we have more balanced values: Recall: 0.511, Precision: 0.555, $F_1$-measure: 0.532. 
+In the Figure \ref{fig:SMOTE_ROC} we can see that using ROC Curve, the Gradient Boosted Trees is a better classifier than Logistic for any \% of FPR.
+
 We decided to choose the SMOTE instead of a normal oversampling (taking the same record multiple times) because it is less prone to the overfitting phenomena.\newline
 To use SMOTE with  cross validation we need to apply SMOTE on the training set and not on the combination of training and validation set otherwise we won't have the right values of the various measures.
-Using SMOTE with 3-Folds Cross Validation confirms the values obtained with Holdout.
+Using SMOTE with 3-Folds Cross Validation we confirm the values obtained with Holdout.
 
 
 \section{Conclusion}
