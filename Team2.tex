@@ -80,7 +80,7 @@
 \Archive{ML Project - Team 2} % Additional notes (e.g. copyright, DOI, review/research article)
 
 
-\PaperTitle{Credit Card Defaulters: A Predictive Model} % Article title
+\PaperTitle{Credit Card Defaulters: Predictive Model} % Article title
 
 \Authors{Kasela Pranav\textsuperscript{1}, Pagani Miriam Beatrice\textsuperscript{2}, Savino Marco\textsuperscript{3}, Zaccaria Antonella\textsuperscript{4}}
 
@@ -89,7 +89,7 @@
  \affiliation{\textsuperscript{3}\textit{Matricola: 793516, Department of Informatics, University of Bicocca}}
 \affiliation{\textsuperscript{4}\textit{Matricola: 848647, Department of Informatics, University of Bicocca}}
 
-\Keywords{Keyword1 --- Keyword2 --- Keyword3} % Keywords - if you don't want any simply remove all the text between the curly brackets
+\Keywords{Credit Card --- Default --- Prevision} % Keywords - if you don't want any simply remove all the text between the curly brackets
 \newcommand{\keywordname}{Keywords} % Defines the keywords heading name
 
 %----------------------------------------------------------------------------------------
@@ -177,14 +177,14 @@
 	\end{figure}
 	
 	
-	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavely correlated (Figure \ref{fig:corr}); the best option is to create a new feature which is the mean of these colums, called \textit{AVG\_BILL}.
-	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes.
+	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavily correlated (Figure \ref{fig:corr}); the best option is to create a new feature which is the mean of these columns, called \textit{AVG\_BILL\_AMT}.
+	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes and keep only \textit{AVG\_BILL\_AMT}.
 	
-	For the \textit{AGE} attribute we decide to discretize, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
-	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced.
+	For the \textit{AGE} attribute we decide to discretize it, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
+	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced. The new attribute is called \textit{AgeBin}
 	
 	In the \textit{EDUCATION} attribute we combine \textit{0=others} with \textit{3=others} (it is considered to be divorced or separated).
-	We combine \textit{SEX} and \textit{MARRIAGE} to reduce the dimension using the following python code:
+	We combine \textit{SEX} and \textit{MARRIAGE} to reduce the dimension using the following python code, this way the we keep all the information but reduce the number of features:
 	
 		
 \begin{lstlisting}
@@ -197,9 +197,9 @@ df.loc[((df.SEX == 2) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 5 #single woman
 df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woman
 \end{lstlisting}
 	
-	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$, PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum to 1 and apply the logarithm to the later. We notice that the distribution of the \textit{AVG\_BILL\_AMT} has one strong outlier so we remove it to avoid overfitting and standardize the latter for it to be more sparse.
+	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$, PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum of the attributes to 1 and apply logarithm to the latter. We notice that the distribution of the \textit{AVG\_BILL\_AMT} has one strong outlier so we remove it to avoid overfitting and standardize the latter so it is more sparse.
 	
-	To start studing the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
+	To start studying the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
 	
 	\section{Classification}
 	The models selected for the classifications are: 
@@ -232,9 +232,9 @@ df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woma
 	\label{fig:class}
 	\end{figure}
 
-The target class has 77.7\% of no defaulters, 22.3\% of defaulters (Figure \ref{fig:class}), so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
+The target class has 77.7\% of not defaulters, 22.3\% of defaulters (Figure \ref{fig:class}), so we have a class imbalance problem and we cannot use accuracy as an evaluation measure for the classifiers.
 The optimal measure could be either Recall or Precision, depending on bank's preference.
-We decide to use two measures: harmonic mean between Recall and Precision: $F_1-$measure and AUC of the ROC Curve.
+We decide to use the following measures: Recall, Precision, $F_1-$measure and AUC of the ROC Curve.
 
 
 \begin{table}[h]
@@ -261,9 +261,9 @@ We decide to use two measures: harmonic mean between Recall and Precision: $F_1-
 \end{table}
 
 \noindent
-In the Table \ref{table:holdout} we see that using holdout, for the Recall Measure NaiveBayes and NBTree are the optimal classifiers, but NaiveBayes has a low precision of 0.488. Using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.\newline
+In the Table \ref{table:holdout} we see that using holdout, for the Recall measure NaiveBayes and NBTree are the optimal classifiers, but NaiveBayes has a low precision of 0.488. Using the $F_1-$measure or AUC the best classifiers are MLP, NBTree, BayesNet and NaiveBayes.\newline
 %3 folds is here
-Since the Holdout method depends on the particular test set, we use the 3-Folds Cross Validation obtaining:
+The Holdout method depends on the particular test set. We use the 3-Folds Cross Validation to have a less biased measure:
 
 \begin{table}[h]
 	\resizebox{\columnwidth}{!}{
@@ -291,14 +291,14 @@ Since the Holdout method depends on the particular test set, we use the 3-Folds 
 \end{table}
 
 \noindent
-In the Table \ref{table:3fcv} we see that using 3 Folds Cross Validation, for the Recall Measure NaiveBayes is the optimal classifiers. Using the $F_1-$measure the best classifiers are NBTree, BayesNet and NaiveBayes. While for the AUC the best one is the MLP.
+In the Table \ref{table:3fcv} we see that using 3 Folds Cross Validation, for the Recall measure NaiveBayes is the optimal classifiers. Using the $F_1-$measure the best classifiers are NBTree, BayesNet and NaiveBayes. While for the AUC the best one is the MLP.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%ROC Curve images%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Feature Selection}
-For the feature selection we use 5 filters:
+For the feature selection we use 5 different filters:
 \begin{itemize}[noitemsep]
 	\item Gain Ratio feature evaluation
 	\item Information Gain Ranking Filter
@@ -308,7 +308,7 @@ For the feature selection we use 5 filters:
 \end{itemize}
 
 But all these filters select all attributes. By using these filters we gain no additional information.
-The next approach is to use a Wrapper, we decide to use as the classifier BayesNet and NaiveBayes with 5 folds using as evaluation measure AUC.
+The next approach is to use Wrapper, we decide to use as the classifiers: BayesNet and NaiveBayes with 5 folds using as evaluation measure AUC.
 The wrapper with BayesNet selects 10 attributes:
 \begin{itemize}[noitemsep]
 \item LIMIT\_BAL
@@ -339,12 +339,12 @@ While the wrapper with NaiveBayes select the following 11:
 
 
 \subsection{Evaluation}
-In this phase we evaluate the same models that we used for feature selection.
+In this phase we evaluate the same models that we used before feature selection in order to compare them.
 
 \subsubsection{Wrapper NaiveBayes}
 The Tables \ref{table:holdNB}, \ref{table:3fcvNB} are obtained after applying the Feature Selection with NaiveBayes. 
 The latter shows that AUC measure increases in Bayesian models and remains more or less unchanged for others. 
-The F$_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better without the confidence interval.
+The $F_1$-measure gets worse slightly, but we cannot state anything about the model getting either worse or better without the confidence interval.
 
 \begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
@@ -367,7 +367,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 			\bottomrule
 			
 	\end{tabular}}
-	\caption{Evaluation measures using Holdout}
+	\caption{Evaluation using Holdout}
 	\label{table:holdNB}
 \end{table} 
 \pagebreak
@@ -392,7 +392,7 @@ The F$_1$-measure gets worse slightly, but we cannot state anything about the mo
 			\bottomrule
 			
 	\end{tabular}}
-	\caption{Evaluation measures using 3-Folds Cross Validation}
+	\caption{Evaluation using 3-Folds Cross Validation}
 	\label{table:3fcvNB}
 \end{table} 
 \noindent The benefit from the Feature Selection is that the number of attributes is reduced from 17 to 10, while it doesn't seem to have any considerable statistical difference between the initial model and the model obtained after the Feature Selection.
@@ -421,7 +421,7 @@ In the Tables \ref{table:holdBN}, \ref{table:3fcvBN} contain the value of the ev
 			\bottomrule
 			
 	\end{tabular}}
-	\caption{Evaluation measures using Holdout}
+	\caption{Evaluation using Holdout}
 	\label{table:holdBN}
 \end{table}
 
@@ -447,18 +447,19 @@ In the Tables \ref{table:holdBN}, \ref{table:3fcvBN} contain the value of the ev
 			\bottomrule
 			
 	\end{tabular}}
-	\caption{Evaluation measures using 3 Fold Cross Validation}
+	\caption{Evaluation using 3 Fold Cross Validation}
 	\label{table:3fcvBN}
 \end{table} 
 
 The same condition as NaiveBayes Wrapper persists here, 
-as a matter of fact, the AUC measure increases and in the Bayesian classifiers and the F$_1$-measure doesn't seem to have any significant statistical difference. 
+as a matter of fact, the AUC measure increases and in the Bayesian classifiers and the $F_1$-measure doesn't seem to have any significant statistical difference. \newline
+The behavior of the two wrappers could have been expected to be similar since the attributes they choose are similar: except for \textit{PAY\_4} and \textit{PAY\_AMT1} the attributes of the BayesNet Wrapper are a subset of the attributes of NaiveBayes Wrapper.
 
-\section{Alternative Approach} 
-The alternative approach consists in a cost analysis, giving a more rate to eitheir Precision and Recall. 
+\section{Alternative Approaches} %approaches (I use also SMOTE[seems good])
+One of the alternative approach consists in a cost analysis, giving a more weight to either Precision or Recall. 
 
 We proceed with a Brute Force Approach, trying some different cost matrix to select the most suitable one. \newline
-We found two matrices A(TN=0, FP=2, FN=5, TP=-1) and B(TN=-1, FP=2, FN=5, TP=0):
+We chose two matrices A(TN=0, FP=2, FN=5, TP=-1) and B(TN=-1, FP=2, FN=5, TP=0):
 $$
 A=\begin{bmatrix} 
 0 & +2 \\
@@ -472,17 +473,20 @@ B=\begin{bmatrix}
 \end{bmatrix}
 $$ 
 
-Using all the features, with matrix A we have Recall= 0.586, Precision = 0.454 and F$_1$-measure = 0.512, while with the matrix B we have Recall = 0.527, Precision = 0.49 and F$_1$-measure = 0.508. 
+Using all the features, with matrix A we have Recall= 0.586, Precision = 0.454 and $F_1$-measure = 0.512, while with the matrix B we have Recall = 0.527, Precision = 0.49 and $F_1$-measure = 0.508. 
 We have improved the Recall of 0.1 in the first case despite of the reduction of Precision.
 
-After the Feature Selection with NaiveBayes, the Recall is reduced from 0.586 to 0.546, instead the Precision is increased from 0.454 to 0.502; overall the F$_1$-measure is increased from 0.512 to 0.523 with the matrix A. 
-With the matrix B we have the same behaviour (Precision = 0.552, Recall = 0.484 and F$_1$-measure = 0.515). 
+After the Feature Selection with NaiveBayes, the Recall is reduced from 0.586 to 0.546, instead the Precision is increased from 0.454 to 0.502; overall the $F_1$-measure is increased from 0.512 to 0.523 with the matrix A. 
+With the matrix B we have the same behavior (Precision = 0.552, Recall = 0.484 and $F_1$-measure = 0.515). 
 
-With the BayesNet we have: matrix A - Recall = 0.537, Precision = 0.508 and F$_1$-measure = 0.522. Matrix B - Recall = 0.477, Precision = 0.548 and F$_1$-measure = 0.51. 
-The behaviour is similar to the NaiveBayes Wrapper. 
+With the BayesNet we have: matrix A - Recall = 0.537, Precision = 0.508 and $F_1$-measure = 0.522. Matrix B - Recall = 0.477, Precision = 0.548 and $F_1$-measure = 0.51. 
+The behavior is similar to the NaiveBayes Wrapper as expected.  
 
 \section{Conclusion}
 
+%Human help, we find the half of the defaulter (half are not defaulter) so the workers can concentrate more on them using experience to find out the possible defaulters.
+
+%Smote- may be I will use it.
 
 
 	%----------- -----------------------------------------------------------------------------
@@ -499,4 +503,8 @@ The behaviour is similar to the NaiveBayes Wrapper.
 	
 	%----------------------------------------------------------------------------------------
 	
+	%\newpage
+	\begin{figure*}[h]
+		\includegraphics[width=\linewidth]{Workflow.png}
+	\end{figure*}
 \end{document}
