@@ -177,11 +177,11 @@
 	\end{figure}
 	
 	
-	The \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} are heavily correlated (Figure \ref{fig:corr}); the best option is to create a new feature which is the mean of these columns, called \textit{AVG\_BILL\_AMT}.
-	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1, $\hdots$,BILL\_AMT6} attributes and keep only \textit{AVG\_BILL\_AMT}.
+	The \textit{BILL\_AMT1,$\hdots$,BILL\_AMT6} are heavily correlated (Figure \ref{fig:corr}); the best option is to create a new feature which is the mean of these columns, called \textit{AVG\_BILL\_AMT}.
+	We decide to compute the average because the bill indicates how much a person spends and it usually remains constant during the months. We remove the \textit{BILL\_AMT1,$\hdots$,BILL\_AMT6} attributes and keep only \textit{AVG\_BILL\_AMT}.
 	
 	For the \textit{AGE} attribute we decide to discretize it, creating 4 groups: $\{[20,30],(30,40],(40,50],(50,+\infty)\}$.
-	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced. The new attribute is called \textit{AgeBin}
+	The choice to discretize is made to avoid the possible overfitting phenomena since the \textit{AGE} attribute is imbalanced. The new attribute is called \textit{AgeBin}.
 	
 	In the \textit{EDUCATION} attribute we combine \textit{0=others} with \textit{3=others} (it is considered to be divorced or separated).
 	We combine \textit{SEX} and \textit{MARRIAGE} to reduce the dimension using the following python code, this way the we keep all the information but reduce the number of features:
@@ -197,7 +197,9 @@ df.loc[((df.SEX == 2) & (df.MARRIAGE == 2)) , 'SEX_MARRIAGE'] = 5 #single woman
 df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woman
 \end{lstlisting}
 	
-	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$, PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. Since there are negative values, we translate the minimum of the attributes to 1 and apply logarithm to the latter. We notice that the distribution of the \textit{AVG\_BILL\_AMT} has one strong outlier so we remove it to avoid overfitting and standardize the latter so it is more sparse.
+	Due to the distribution of \textit{LIMIT\_BAL, PAY\_AMT1,$\hdots$, PAY\_AMT6, AVG\_BILL\_AMT} we use the logarithmic transformation. 
+	Since there are negative values, we translate the minimum of the attributes to 1 and apply logarithm to the latter. 
+	We notice that the distribution of the \textit{AVG\_BILL\_AMT} has one strong outlier so we remove it to avoid overfitting and standardize the latter so it is more sparse.
 	
 	To start studying the classifiers we split our data in training set(67\%) and test set(33\%), using a stratified sampling on \textit{default.payment.next.month}.
 	
@@ -205,14 +207,11 @@ df.loc[((df.SEX == 2) & (df.MARRIAGE == 3)) , 'SEX_MARRIAGE'] = 6 #divorced woma
 	The models selected for the classifications are: 
 	\begin{itemize}[noitemsep]
 		\item MLP
-		\item Support Vector Machine: SPegasos
+		\item SPegasos
 		\item NaiveBayes
-		
-		\item Bayesian Network:
-		\begin{itemize}[noitemsep]
-				\item NBTree
-				\item BayesNet
-		\end{itemize}
+
+		\item NBTree 
+		\item BayesNet
 		
 		\item  Heuristic:
 		\begin{itemize}[noitemsep]
