@@ -6,6 +6,6 @@ Tutorial LaTeX: https://www.latex-tutorial.com/tutorials/
 
 Tutorial Git: http://rogerdudler.github.io/git-guide/index.it.html
 
-(più avanzato: https://www.tutorialspoint.com/git/)
+(more advanced: https://www.tutorialspoint.com/git/)
 
-To use LaTeX you can use: https://www.overleaf.com/ without installing TeX in PC
+To use LaTeX you can use: https://www.overleaf.com/ without installing TeX in PC.
