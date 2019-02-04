@@ -1,4 +1,5 @@
-# Progetto-ML
+# Project-Machine Learning
+
 Upload the report of the Machine Learning Project here.
 
 Tutorial LaTeX: https://www.latex-tutorial.com/tutorials/
