@@ -98,16 +98,14 @@
 
 \Abstract{Credit card default happens when you've become severely delinquent on your credit card payment.
 	
-	It's a serious credit card status that not only affects your standing with that credit card issuer, but also your credit standing in general and your ability to get approved for credit cards, loans, and other credit-based services.
+	It's a serious credit card status that not only affects someones standing with that credit card issuer, but also his/her credit standing in general and his/her ability to get approved for credit cards, loans, and other credit-based services\cite{Default}.
 	
-	When you accept a credit card, you agree to certain terms, e.g. you agree to make your minimum payment by the due date listed on your credit card statement.
+	When someone accept a credit card, he/she agree to certain terms, e.g. to make your minimum payment by the due date listed on his/her credit card statement.
 	
-	If you miss the minimum credit card payment six months in a row, your credit card will be in default; your credit card issuer will likely close your account and report the default to the credit bureaus.
+	If he/she miss the minimum credit card payment six months in a row, your credit card will be in default; The credit card issuer will likely close the account and report the default to the credit bureaus.
 	
-	By the time your credit card defaults, you've likely accumulated hundreds of dollars in fees and interest charges. 
-	
-	
-	Unfortunately, your options for clearing up the credit card default may be limited because of the number of payments you've missed on your account. 
+	By the time the credit card defaults, he/she have likely accumulated hundreds of dollars in fees and interest charges. 
+	Unfortunately, the options for clearing up the credit card default may be limited because of the number of payments  missed on the account\cite{ItalPress}. 
 	
 	For this reason, assuming truthful the given data, we show the procedure used to create a prevision algorithm aiming to foresee the default payment's client.
 }
@@ -127,10 +125,10 @@
 	%	ARTICLE CONTENTS
 	%----------------------------------------------------------------------------------------
 	
-	\section*{Introduction\cite{DataSet}} % The \section*{} command stops section numbering
+	\section*{Introduction} 
+	\addcontentsline{toc}{section}{Introduction} 
 	
-	\addcontentsline{toc}{section}{Introduction} % Adds this section to the table of contents
-	This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of 30,000 credit card clients in Taiwan from April 2005 to September 2005.
+	This dataset is available on Kaggle under the name \textit{Default of Credit Card Clients Dataset} \cite{DataSet} and it  contains information on default payments, demographic factors, credit data, history of payment and bill statements of 30,000 credit card clients in Taiwan from April 2005 to September 2005. 
 	
 	The 25 attributes and their characteristics are:
 	\begin{itemize}[noitemsep]
@@ -140,12 +138,12 @@
 		\item EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 0,5,6=unknown)
 		\item MARRIAGE: Marital status (1=married, 2=single, 3=others, 0=others)
 		\item AGE: Age in years
-		\item PAY\_0: Repayment status in September 2005 (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above)
-		\item PAY\_2: Repayment status in August, 2005 (scale same as above)
-		\item PAY\_3: Repayment status in July, 2005 (scale same as above)
-		\item PAY\_4: Repayment status in June, 2005 (scale same as above)
-		\item PAY\_5: Repayment status in May, 2005 (scale same as above)
-		\item PAY\_6: Repayment status in April, 2005 (scale same as above)
+		\item PAY\_0: Repayment status in September 2005 (-2=no consumption, 0=use of revolving credit, -1=pay duly, 1=payment delay for one month, 2=payment delay for two months, ... 8=payment delay for eight months, 9=payment delay for nine months and above, the same scale applies for the following PAY\_X)
+		\item PAY\_2: Repayment status in August, 2005
+		\item PAY\_3: Repayment status in July, 2005 
+		\item PAY\_4: Repayment status in June, 2005 
+		\item PAY\_5: Repayment status in May, 2005 
+		\item PAY\_6: Repayment status in April, 2005 
 		\item BILL\_AMT1: Amount of bill statement in September 2005 respectively (NT dollar)
 		\item BILL\_AMT2: Amount of bill statement in August, 2005 (NT dollar)
 		\item BILL\_AMT3: Amount of bill statement in July, 2005 (NT dollar)
@@ -170,7 +168,7 @@
 	Before proceeding with Feature Engineering and the  implementation of Machine Learning, we analyze the dataset with Descriptive Statistics in order to understand more the composition and tendencies of our data.
 	
 	We notice that in the attribute \textit{EDUCATION} the values 0,5 and 6 are unknown while the value 4 is other, so we decide to categorize 0,5 and 6 as other too.
-	\begin{figure}[h]
+	\begin{figure}[h!]
 		\includegraphics[width=\linewidth]{correlation.png}
 		\caption{Correlation Plot of all the attributes}
 		\label{fig:corr}
@@ -255,7 +253,7 @@ We decide to use the following measures: Recall, Precision, $F_1-$measure and AU
 		\bottomrule
 		
 \end{tabular}}
-\caption{Evaluation measures using Holdout}
+\caption{Evaluation using Holdout and all attributes}
 \label{table:holdout}
 \end{table}
 
@@ -265,7 +263,7 @@ In the Table \ref{table:holdout} we see that using holdout, for the Recall measu
 %3 folds is here
 The Holdout method depends on the particular test set. We use the 3-Folds Cross Validation to have a less biased measure:
 
-\begin{table}[h]
+\begin{table}[h!]
 	\resizebox{\columnwidth}{!}{
 		\begin{tabular}{llllll}
 			\toprule
@@ -286,7 +284,7 @@ The Holdout method depends on the particular test set. We use the 3-Folds Cross 
 			\bottomrule
 			
 	\end{tabular}}
-	\caption{Evaluation measures using 3-Folds Cross Validation}
+	\caption{Evaluation using 3-Folds CV and all attributes}
 	\label{table:3fcv}
 \end{table}
 
@@ -294,7 +292,7 @@ The Holdout method depends on the particular test set. We use the 3-Folds Cross 
 In the Table \ref{table:3fcv} we see that using 3 Folds Cross Validation, for the Recall measure NaiveBayes is the optimal classifiers. Using the $F_1-$measure the best classifiers are NBTree, BayesNet and NaiveBayes. While for the AUC the best one is the MLP.
 In Figure \ref{fig:ROC_3fcv} we plot the ROC curve of different classifiers using 3-Folds. We note that in the first of the two graphs in Figure \ref{fig:ROC_3fcv} Logistic is (except for a small portion of the domain) on the top of the other 3 curves and at a certain point J48 falls even below the random line, while in the second graph MLP is at the top but the ROC curves of the Bayesian classifiers are not far from the MLP curve.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\includegraphics[width=\linewidth]{ROC_III.png}
 	\includegraphics[width=\linewidth]{ROC_IandII.png}
 	\caption{ROC Curves using 3-Folds CV}
@@ -491,7 +489,7 @@ With the matrix B we have the same behavior (Precision = 0.552, Recall = 0.484 a
 With the BayesNet we have: matrix A - Recall = 0.537, Precision = 0.508 and $F_1$-measure = 0.522. Matrix B - Recall = 0.477, Precision = 0.548 and $F_1$-measure = 0.51. 
 The behavior is similar to the NaiveBayes Wrapper as expected.  
 
-\subsection{SMOTE Technique}
+\subsection{SMOTE Technique \cite{SMOTE}}
 Another approach we used is to reduce the class imbalance oversampling the rare class in the training set using the \textit{SMOTE} technique. \newline
 We use SMOTE on the training set filtered after the NaiveBayes Wrapper using the number of neighbors equals to 5. 
 To evaluate the performance we use two models: Logistic and Gradient Boosted Trees. The trees and Logistic models are the one who usually benefit more using the SMOTE technique. 
