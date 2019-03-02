@@ -1,5 +1,4 @@
-# Project for the course of Machine Learning
-# University of Milano-Bicocca.
+# Project for the course of Machine Learning <br> University of Milano-Bicocca.
 
 
 Upload the report of the Machine Learning Project and it's future modification here.
