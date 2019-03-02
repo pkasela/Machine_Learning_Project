@@ -1,6 +1,8 @@
-# Project-Machine Learning
+# Project for the course of Machine Learning
+# University of Milano-Bicocca.
 
-Upload the report of the Machine Learning Project here.
+
+Upload the report of the Machine Learning Project and it's future modification here.
 
 Tutorial LaTeX: https://www.latex-tutorial.com/tutorials/
 
